@@ -1,8 +1,11 @@
 import { useEffect } from "react";
-import { useComponetsStore } from "../stores/components";
+import { useComponetsStore, Component } from "../stores/components";
+import React from "react";
+import { useComponentConfigStore } from "../stores/component-config";
 
 export function EditArea() {
-  const { components, addComponent, deleteComponent } = useComponetsStore();
+  const { components, addComponent } = useComponetsStore();
+  const { componentConfig } = useComponentConfigStore();
 
   useEffect(() => {
     addComponent(
@@ -18,20 +21,44 @@ export function EditArea() {
     addComponent(
       {
         id: 333,
-        name: "Video",
-        props: {},
+        name: "Button",
+        props: {
+          text: "无敌",
+        },
         children: [],
       },
       222
     );
   }, []);
 
-  setTimeout(() => {
-    deleteComponent(333);
-  }, 3000);
+  // setTimeout(() => {
+  //   deleteComponent(333);
+  // }, 3000);
+
+  function renderComponents(components: Component[]): React.ReactNode {
+    return components.map((component: Component) => {
+      const config = componentConfig?.[component.name];
+
+      if (!config?.component) {
+        return null;
+      }
+
+      return React.createElement(
+        config.component,
+        {
+          key: component.id,
+          ...config.defaultProps,
+          ...component.props,
+        },
+        renderComponents(component.children || [])
+      );
+    });
+  }
+
   return (
-    <div>
-      <pre>{JSON.stringify(components, null, 2)}</pre>
+    <div className="h-[100%]">
+      {/* <pre>{JSON.stringify(components, null, 2)}</pre> */}
+      {renderComponents(components)}
     </div>
   );
 }
