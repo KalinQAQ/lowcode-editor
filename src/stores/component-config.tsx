@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import Container from "../materials/Container";
-import Button from "../materials/Button";
-import Page from "../materials/Page";
+import Container from "../editor/materials/Container";
+import Button from "../editor/materials/Button";
+import Page from "../editor/materials/Page";
 
 export interface ComponentConfig {
   name: string;
