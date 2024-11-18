@@ -1,4 +1,4 @@
-import { useComponetsStore } from "../../stores/components";
+import { useComponetsStore } from "../../../stores/components";
 
 export function Setting() {
   const { components } = useComponetsStore();
